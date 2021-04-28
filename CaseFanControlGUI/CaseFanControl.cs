@@ -1,5 +1,6 @@
 ﻿using OpenHardwareMonitor.Hardware;
 using System;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -29,14 +30,11 @@ namespace CaseFanControlGUI {
             public void VisitComputer(IComputer computer) {
                 computer.Traverse(this);
             }
-            public void VisitHardware(IHardware hardware) {
-                hardware.Update();
-                foreach (IHardware subHardware in hardware.SubHardware) subHardware.Accept(this);
-            }
+            public void VisitHardware(IHardware hardware) { }
             public void VisitSensor(ISensor sensor) { }
             public void VisitParameter(IParameter parameter) { }
         }
-        public string GetGPUTemp() {
+        public int GetGPUTemp() {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
             computer.Open();
@@ -47,15 +45,15 @@ namespace CaseFanControlGUI {
                 if(hardwareItem.HardwareType == HardwareType.GpuNvidia) {
                     foreach(var sensor in hardwareItem.Sensors) {
                         if (sensor.SensorType == SensorType.Temperature)
-                            return sensor.Value.ToString();
+                            return (int)sensor.Value;
                     }
                 }
             }
             computer.Close();
-            return null;
+            return 0;
         }
 
-        public string GetFanSpeed() {
+        public int GetFanSpeed() {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
             computer.Open();
@@ -69,14 +67,14 @@ namespace CaseFanControlGUI {
                         if (subhardware.Sensors.Length > 0) {
                             foreach (var sensor in subhardware.Sensors) {
                                 if (sensor.SensorType == SensorType.Fan && sensor.Name.Equals("Fan #3"))
-                                    return sensor.Value.ToString();
+                                    return (int)sensor.Value;
                             }
                         }
                     }
                 }
             }
             computer.Close();
-            return "0";
+            return 0;
         }
     }
 }
