@@ -31,6 +31,9 @@ namespace CaseFanControlGUI {
             this.gpuTemp = new System.Windows.Forms.Label();
             this.fanSpeed = new System.Windows.Forms.Label();
             this.getInfotimer = new System.Windows.Forms.Timer(this.components);
+            this.userDesiredSpeed = new System.Windows.Forms.NumericUpDown();
+            this.setSpeedButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.userDesiredSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // silentButton
@@ -83,11 +86,29 @@ namespace CaseFanControlGUI {
             this.getInfotimer.Interval = 1000;
             this.getInfotimer.Tick += new System.EventHandler(this.getInfotimer_Tick);
             // 
+            // userDesiredSpeed
+            // 
+            this.userDesiredSpeed.Location = new System.Drawing.Point(16, 67);
+            this.userDesiredSpeed.Name = "userDesiredSpeed";
+            this.userDesiredSpeed.Size = new System.Drawing.Size(76, 20);
+            this.userDesiredSpeed.TabIndex = 6;
+            // 
+            // setSpeedButton
+            // 
+            this.setSpeedButton.Location = new System.Drawing.Point(102, 64);
+            this.setSpeedButton.Name = "setSpeedButton";
+            this.setSpeedButton.Size = new System.Drawing.Size(75, 25);
+            this.setSpeedButton.TabIndex = 7;
+            this.setSpeedButton.Text = "Set Speed";
+            this.setSpeedButton.UseVisualStyleBackColor = true;
+            // 
             // CaseFanControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(311, 142);
+            this.Controls.Add(this.setSpeedButton);
+            this.Controls.Add(this.userDesiredSpeed);
             this.Controls.Add(this.fanSpeed);
             this.Controls.Add(this.gpuTemp);
             this.Controls.Add(this.label2);
@@ -96,6 +117,7 @@ namespace CaseFanControlGUI {
             this.Name = "CaseFanControl";
             this.Text = "Case Fan Control";
             this.Load += new System.EventHandler(this.CaseFanControl_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.userDesiredSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -109,6 +131,8 @@ namespace CaseFanControlGUI {
         private System.Windows.Forms.Label gpuTemp;
         private System.Windows.Forms.Label fanSpeed;
         private System.Windows.Forms.Timer getInfotimer;
+        private System.Windows.Forms.NumericUpDown userDesiredSpeed;
+        private System.Windows.Forms.Button setSpeedButton;
     }
 }
 
