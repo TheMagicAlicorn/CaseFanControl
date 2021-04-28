@@ -22,7 +22,8 @@ namespace CaseFanControlGUI {
         }
 
         private void getInfotimer_Tick(object sender, EventArgs e) {
-            GetSysInfos();
+            gpuTemp.Text = $"{GetGPUTemp()} °C";
+            fanSpeed.Text = $"{GetFanSpeed()} RPM";
         }
         public class UpdateVisitor : IVisitor {
             public void VisitComputer(IComputer computer) {
@@ -35,7 +36,7 @@ namespace CaseFanControlGUI {
             public void VisitSensor(ISensor sensor) { }
             public void VisitParameter(IParameter parameter) { }
         }
-        public void GetSysInfos() {
+        public string GetGPUTemp() {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
             computer.Open();
@@ -45,22 +46,37 @@ namespace CaseFanControlGUI {
             foreach(var hardwareItem in computer.Hardware) {
                 if(hardwareItem.HardwareType == HardwareType.GpuNvidia) {
                     foreach(var sensor in hardwareItem.Sensors) {
-                        if(sensor.SensorType == SensorType.Temperature)
-                            gpuTemp.Text = $"{sensor.Value} °C";
-                    }
-                }
-                if(hardwareItem.HardwareType == HardwareType.Mainboard) {
-                    foreach(var subhardware in hardwareItem.SubHardware) {
-                        subhardware.Update();
-                        if(subhardware.Sensors.Length > 0) {
-                            foreach (var sensor in subhardware.Sensors) {
-                                if (sensor.SensorType == SensorType.Fan && sensor.Name.Equals("AUXFANIN0"))
-                                    fanSpeed.Text = $"{sensor.Value} RPM";
-                            }
-                        }    
+                        if (sensor.SensorType == SensorType.Temperature)
+                            return sensor.Value.ToString();
                     }
                 }
             }
+            computer.Close();
+            return null;
+        }
+
+        public string GetFanSpeed() {
+            UpdateVisitor updateVisitor = new UpdateVisitor();
+            Computer computer = new Computer();
+            computer.Open();
+            computer.Accept(updateVisitor);
+            computer.MainboardEnabled = true;
+
+            foreach (var hardwareItem in computer.Hardware) {
+                if (hardwareItem.HardwareType == HardwareType.Mainboard) {
+                    foreach (var subhardware in hardwareItem.SubHardware) {
+                        subhardware.Update();
+                        if (subhardware.Sensors.Length > 0) {
+                            foreach (var sensor in subhardware.Sensors) {
+                                if (sensor.SensorType == SensorType.Fan && sensor.Name.Equals("Fan #3"))
+                                    return sensor.Value.ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            computer.Close();
+            return "0";
         }
     }
 }
