@@ -30,9 +30,9 @@ namespace CaseFanControlGUI {
             this.label2 = new System.Windows.Forms.Label();
             this.gpuTemp = new System.Windows.Forms.Label();
             this.fanSpeed = new System.Windows.Forms.Label();
-            this.getInfotimer = new System.Windows.Forms.Timer(this.components);
+            this.GetInfotimer = new System.Windows.Forms.Timer(this.components);
             this.userDesiredSpeed = new System.Windows.Forms.NumericUpDown();
-            this.setSpeedButton = new System.Windows.Forms.Button();
+            this.SetSpeedButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.userDesiredSpeed)).BeginInit();
             this.SuspendLayout();
             // 
@@ -68,46 +68,68 @@ namespace CaseFanControlGUI {
             this.gpuTemp.AutoSize = true;
             this.gpuTemp.Location = new System.Drawing.Point(85, 13);
             this.gpuTemp.Name = "gpuTemp";
-            this.gpuTemp.Size = new System.Drawing.Size(63, 13);
+            this.gpuTemp.Size = new System.Drawing.Size(21, 13);
             this.gpuTemp.TabIndex = 3;
-            this.gpuTemp.Text = "GPU TEMP";
+            this.gpuTemp.Text = " °C";
             // 
             // fanSpeed
             // 
             this.fanSpeed.AutoSize = true;
-            this.fanSpeed.Location = new System.Drawing.Point(117, 37);
+            this.fanSpeed.Location = new System.Drawing.Point(116, 37);
             this.fanSpeed.Name = "fanSpeed";
-            this.fanSpeed.Size = new System.Drawing.Size(67, 13);
+            this.fanSpeed.Size = new System.Drawing.Size(34, 13);
             this.fanSpeed.TabIndex = 4;
-            this.fanSpeed.Text = "FAN SPEED";
+            this.fanSpeed.Text = " RPM";
             // 
-            // getInfotimer
+            // GetInfotimer
             // 
-            this.getInfotimer.Interval = 1000;
-            this.getInfotimer.Tick += new System.EventHandler(this.getInfotimer_Tick);
+            this.GetInfotimer.Enabled = true;
+            this.GetInfotimer.Interval = 1000;
+            this.GetInfotimer.Tick += new System.EventHandler(this.GetInfotimer_Tick);
             // 
             // userDesiredSpeed
             // 
+            this.userDesiredSpeed.Increment = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             this.userDesiredSpeed.Location = new System.Drawing.Point(16, 67);
+            this.userDesiredSpeed.Maximum = new decimal(new int[] {
+            2400,
+            0,
+            0,
+            0});
+            this.userDesiredSpeed.Minimum = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
             this.userDesiredSpeed.Name = "userDesiredSpeed";
             this.userDesiredSpeed.Size = new System.Drawing.Size(76, 20);
             this.userDesiredSpeed.TabIndex = 6;
+            this.userDesiredSpeed.Value = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
             // 
-            // setSpeedButton
+            // SetSpeedButton
             // 
-            this.setSpeedButton.Location = new System.Drawing.Point(102, 64);
-            this.setSpeedButton.Name = "setSpeedButton";
-            this.setSpeedButton.Size = new System.Drawing.Size(75, 25);
-            this.setSpeedButton.TabIndex = 7;
-            this.setSpeedButton.Text = "Set Speed";
-            this.setSpeedButton.UseVisualStyleBackColor = true;
+            this.SetSpeedButton.Location = new System.Drawing.Point(102, 64);
+            this.SetSpeedButton.Name = "SetSpeedButton";
+            this.SetSpeedButton.Size = new System.Drawing.Size(75, 25);
+            this.SetSpeedButton.TabIndex = 7;
+            this.SetSpeedButton.Text = "Set Speed";
+            this.SetSpeedButton.UseVisualStyleBackColor = true;
+            this.SetSpeedButton.Click += new System.EventHandler(this.SetSpeedButton_Click);
             // 
             // CaseFanControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(311, 142);
-            this.Controls.Add(this.setSpeedButton);
+            this.Controls.Add(this.SetSpeedButton);
             this.Controls.Add(this.userDesiredSpeed);
             this.Controls.Add(this.fanSpeed);
             this.Controls.Add(this.gpuTemp);
@@ -116,7 +138,6 @@ namespace CaseFanControlGUI {
             this.Controls.Add(this.silentButton);
             this.Name = "CaseFanControl";
             this.Text = "Case Fan Control";
-            this.Load += new System.EventHandler(this.CaseFanControl_Load);
             ((System.ComponentModel.ISupportInitialize)(this.userDesiredSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -130,9 +151,9 @@ namespace CaseFanControlGUI {
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label gpuTemp;
         private System.Windows.Forms.Label fanSpeed;
-        private System.Windows.Forms.Timer getInfotimer;
+        private System.Windows.Forms.Timer GetInfotimer;
         private System.Windows.Forms.NumericUpDown userDesiredSpeed;
-        private System.Windows.Forms.Button setSpeedButton;
+        private System.Windows.Forms.Button SetSpeedButton;
     }
 }
 

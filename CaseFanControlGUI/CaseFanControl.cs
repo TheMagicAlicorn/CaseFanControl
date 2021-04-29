@@ -1,13 +1,6 @@
 ﻿using OpenHardwareMonitor.Hardware;
 using System;
 using System.Runtime.InteropServices;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CaseFanControlGUI {
@@ -16,16 +9,15 @@ namespace CaseFanControlGUI {
             InitializeComponent();
         }
 
-        private void CaseFanControl_Load(object sender, EventArgs e) {
-            gpuTemp.Text = " °C";
-            fanSpeed.Text = " RPM";
-            getInfotimer.Enabled = true;
-        }
-
-        private void getInfotimer_Tick(object sender, EventArgs e) {
+        private void GetInfotimer_Tick(object sender, EventArgs e) {
             gpuTemp.Text = $"{GetGPUTemp()} °C";
             fanSpeed.Text = $"{GetFanSpeed()} RPM";
         }
+        [DllImport("cimwin32.dll")] static extern UInt32 SetSpeed(in UInt64 DesiredSpeed);
+        private void SetSpeedButton_Click(object sender, EventArgs e) {
+            SetSpeed((UInt64)userDesiredSpeed.Value);
+        }
+
         public class UpdateVisitor : IVisitor {
             public void VisitComputer(IComputer computer) {
                 computer.Traverse(this);
@@ -34,6 +26,7 @@ namespace CaseFanControlGUI {
             public void VisitSensor(ISensor sensor) { }
             public void VisitParameter(IParameter parameter) { }
         }
+
         public int GetGPUTemp() {
             UpdateVisitor updateVisitor = new UpdateVisitor();
             Computer computer = new Computer();
