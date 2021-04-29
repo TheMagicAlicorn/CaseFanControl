@@ -1,6 +1,7 @@
 ﻿using OpenHardwareMonitor.Hardware;
 using System;
 using System.Runtime.InteropServices;
+using System.Management;
 using System.Windows.Forms;
 
 namespace CaseFanControlGUI {
@@ -14,8 +15,13 @@ namespace CaseFanControlGUI {
             fanSpeed.Text = $"{GetFanSpeed()} RPM";
         }
         [DllImport("cimwin32.dll")] static extern UInt32 SetSpeed(in UInt64 DesiredSpeed);
-        private void SetSpeedButton_Click(object sender, EventArgs e) {
-            SetSpeed((UInt64)userDesiredSpeed.Value);
+        public void SetSpeedButton_Click(object sender, EventArgs e) {
+            ManagementClass fanClass = new ManagementClass("\\\\.\\ROOT\\cimv2" + ":" + "CIM_FAN");
+            ManagementBaseObject inParams = fanClass.GetMethodParameters("SetSpeed");
+            inParams["DesiredSpeed"] = userDesiredSpeed.Value;
+            ManagementBaseObject outParams = fanClass.InvokeMethod("SetSpeed", inParams, null);
+            //fanClass .InvokeMethod("SetSpeed", null);
+            //SetSpeed((UInt64)userDesiredSpeed.Value);
         }
 
         public class UpdateVisitor : IVisitor {
